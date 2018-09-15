@@ -1,0 +1,28 @@
+import hoot.*
+
+buildscript {
+  repositories {
+    google()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:3.3.0-alpha10'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$Deps.kotlin"
+  }
+}
+
+allprojects {
+  repositories {
+    google()
+    jcenter()
+  }
+}
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = "4.10"
+  distributionType = "all"
+}

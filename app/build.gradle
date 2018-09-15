@@ -1,0 +1,58 @@
+import hoot.*
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  compileSdkVersion 28
+  defaultConfig {
+    applicationId "ie.pennylabs.hoot"
+    minSdkVersion 26
+    targetSdkVersion 28
+    versionCode 1
+    versionName "1.0"
+    javaCompileOptions {
+      annotationProcessorOptions {
+        arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+      }
+    }
+  }
+
+  sourceSets {
+    androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+  }
+
+  buildTypes {
+    release {
+      postprocessing {
+        proguardFiles 'proguard-rules.pro'
+        removeUnusedResources = true
+        removeUnusedCode = true
+        optimizeCode = true
+        obfuscate = true
+      }
+    }
+  }
+}
+
+dependencies {
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$Deps.kotlin"
+  implementation 'androidx.appcompat:appcompat:1.0.0-rc02'
+  implementation 'androidx.core:core-ktx:1.0.0-rc02'
+  implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+  implementation "androidx.room:room-runtime:$Deps.arch_room"
+  kapt "androidx.room:room-compiler:$Deps.arch_room"
+
+  implementation "com.google.dagger:dagger:$Deps.dagger"
+  implementation "com.google.dagger:dagger-android:$Deps.dagger"
+  kapt "com.google.dagger:dagger-compiler:$Deps.dagger"
+  kapt "com.google.dagger:dagger-android-processor:$Deps.dagger"
+
+  implementation 'com.jakewharton.timber:timber:4.7.1'
+}
+
+androidExtensions {
+  experimental = true
+}
