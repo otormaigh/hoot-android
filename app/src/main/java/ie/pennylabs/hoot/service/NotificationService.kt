@@ -20,6 +20,6 @@ class NotificationService : NotificationListenerService() {
     val title = statusBarNotifications.notification.extras?.getString(Notification.EXTRA_TITLE)
       ?: "UNKNOWN"
 
-    launch { app.database.songDao().insert(Song(time, title)) }
+    launch { app.database.songDao().insertUnique(Song(time, title)) }
   }
 }
