@@ -12,7 +12,7 @@ import ie.pennylabs.hoot.extension.toIso8601
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_song.*
 
-class SongsAdapter : ListAdapter<Song, SongsAdapter.ViewHolder>(diffCallback) {
+class SongsAdapter(private val onSongSelected: OnSongSelected) : ListAdapter<Song, SongsAdapter.ViewHolder>(diffCallback) {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
     ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_song, parent, false))
 
@@ -22,6 +22,8 @@ class SongsAdapter : ListAdapter<Song, SongsAdapter.ViewHolder>(diffCallback) {
 
   inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
     fun bind(song: Song) {
+      containerView.setOnClickListener { onSongSelected.invoke(song) }
+
       tvTitle.text = song.title
       tvTimestamp.text = song.time.toIso8601()
     }
@@ -32,3 +34,4 @@ private val diffCallback = object : DiffUtil.ItemCallback<Song>() {
   override fun areItemsTheSame(oldItem: Song, newItem: Song) = oldItem.time == newItem.time
   override fun areContentsTheSame(oldItem: Song, newItem: Song) = oldItem === newItem
 }
+typealias OnSongSelected = (Song) -> Unit
