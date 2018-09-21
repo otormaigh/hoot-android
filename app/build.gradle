@@ -4,15 +4,18 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.github.triplet.play'
 
 android {
   compileSdkVersion 28
   defaultConfig {
     applicationId "ie.pennylabs.hoot"
-    minSdkVersion 26
+    minSdkVersion 27
     targetSdkVersion 28
-    versionCode 1
-    versionName "1.0"
+    versionCode BuildConst.Version.code
+    versionName BuildConst.Version.name
+    archivesBaseName = "hoot-$versionName"
+
     javaCompileOptions {
       annotationProcessorOptions {
         arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -24,8 +27,32 @@ android {
     androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
   }
 
+  signingConfigs {
+    debug {
+      storeFile file('../signing/debug.keystore')
+    }
+    if (file('../signing/release.keystore').exists()) {
+      release {
+        storeFile file(Keystore.RELEASE_STORE)
+        storePassword Keystore.STORE_PASSWORD
+        keyAlias Keystore.KEY_ALIAS
+        keyPassword Keystore.KEY_PASSWORD
+      }
+    }
+  }
+
   buildTypes {
+    debug {
+      signingConfig signingConfigs.debug
+      applicationIdSuffix '.debug'
+    }
+
     release {
+      if (file('../signing/release.keystore').exists()) {
+        signingConfig signingConfigs.release
+      } else {
+        signingConfig signingConfigs.debug
+      }
       postprocessing {
         proguardFiles 'proguard-rules.pro'
         removeUnusedResources = true
@@ -38,6 +65,15 @@ android {
 
   packagingOptions {
     exclude 'META-INF/main.kotlin_module'
+  }
+}
+
+if (file('../signing/play.json').exists()) {
+  play {
+    jsonFile = file("../signing/play.json")
+    track = 'internal'
+    untrackOld = true
+    uploadImages = true
   }
 }
 
@@ -65,4 +101,23 @@ kotlin {
 
 androidExtensions {
   experimental = true
+}
+
+task prepareNextRelease {
+  description "Prepares the project for the next release version, see: RELEASING.md"
+
+  doLast {
+    def new_version = project.android.defaultConfig.versionName
+
+    // 7. Create a new release branch `git checkout -b release-{versionName}`
+    exec { commandLine 'git', 'checkout', '-b', "release-$new_version" }
+
+    exec {
+      // 8. Update previous `CHANGELOG.md` entry to append title with the build commit of that release
+      commandLine 'sed', '-i', "", '-e', "1 s/\$/ - ${BuildConst.Git.shortHash}/", file('../CHANGELOG.md')
+    }
+
+    // 9. Commit changes `git commit -am 'bump version to {versionName}'`
+    exec { commandLine 'git', 'commit', '-am', "bump version to $new_version" }
+  }
 }

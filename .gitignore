@@ -15,3 +15,9 @@ build
 
 # OSX
 .DS_Store
+
+# Local
+signing/release.keystore
+signing/play.json
+
+**/KeyStore.kt
