@@ -13,12 +13,14 @@ import ie.pennylabs.hoot.R
 import ie.pennylabs.hoot.app
 import ie.pennylabs.hoot.data.model.Song
 import ie.pennylabs.hoot.extension.hasNotificationAccess
+import ie.pennylabs.hoot.feature.gdpr.GdprBottomSheet
 import kotlinx.android.synthetic.main.activity_songs.*
 
 class SongActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_songs)
+    GdprBottomSheet.show(this)
 
     if (!hasNotificationAccess()) {
       AlertDialog.Builder(this)

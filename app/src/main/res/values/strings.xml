@@ -1,3 +1,11 @@
 <resources>
   <string name="app_name">Hoot</string>
+
+  <!-- sheet_gdpr -->
+  <string name="data_collection">Data collection</string>
+  <string name="gdpr_explanation">To better allow us to optimise, monitor performance and be notified of any crashes occurring in the wild, we would like to collect some anonymize data related to your interaction with this app. To get a more detailed explanation please read our Privacy Policy.</string>
+  <string name="performance_metrics">Performance metrics</string>
+  <string name="crash_reporting">Crash reporting</string>
+  <string name="analytics">Analytics</string>
+  <string name="accept">Accept</string>
 </resources>

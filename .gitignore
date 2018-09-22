@@ -19,5 +19,5 @@ build
 # Local
 signing/release.keystore
 signing/play.json
-
+google-services.json
 **/KeyStore.kt
