@@ -10,6 +10,9 @@ object Deps {
   // com.google.dagger
   const val dagger = "2.16"
 
+  // androidx
+  const val androidx = "1.0.0"
+
   // androidx.room
   const val arch_room = "2.0.0-rc01"
 }
