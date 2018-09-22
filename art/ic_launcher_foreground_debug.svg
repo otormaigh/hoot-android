@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_launcher_foreground</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="ic_launcher_foreground" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" stroke="#9B9B9B" stroke-width="16" fill-rule="nonzero" cx="256" cy="241" r="171"></circle>
+        <path d="M256,236 C256,191.81722 294.279654,156 341.5,156 C388.720346,156 427,191.81722 427,236 L427,412 L256,412 L256,236 Z" id="Combined-Shape-Copy" stroke="#9F9FA2" stroke-width="16" fill-rule="nonzero"></path>
+        <path d="M85,236 C85,191.81722 123.279654,156 170.5,156 C217.720346,156 256,191.81722 256,236 L256,412 L85,412 L85,236 Z" id="Combined-Shape" stroke="#9F9FA2" stroke-width="16" fill-rule="nonzero"></path>
+        <circle id="Oval-2" fill="#9F9FA2" fill-rule="nonzero" cx="171" cy="241" r="21"></circle>
+        <circle id="Oval-2-Copy" fill="#9F9FA2" fill-rule="nonzero" cx="342" cy="241" r="21"></circle>
+        <circle id="debug" fill="#5E9FF7" cx="342" cy="342" r="70"></circle>
+    </g>
+</svg>
