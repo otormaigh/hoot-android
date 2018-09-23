@@ -1,7 +1,7 @@
 version: 2
 
 cache_key: &cache_key
-  key: jars-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/java/hoot/Deps.kt" }}-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+  key: jars-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/java/hoot/Deps.kt" }}-{{ checksum "build.gradle" }}
 
 jobs:
   check:
