@@ -7,6 +7,7 @@ apply plugin: 'kotlin-kapt'
 if (file('../signing/play.json').exists()) {
   apply plugin: 'com.github.triplet.play'
   play {
+    defaultToAppBundles = true
     serviceAccountCredentials = file("../signing/play.json")
     track = 'internal'
   }
@@ -121,6 +122,19 @@ task prepareNextRelease {
 
     // 9. Commit changes `git commit -am 'bump version to {versionName}'`
     exec { commandLine 'git', 'commit', '-am', "bump version to $new_version" }
+  }
+}
+
+task generateChangelog {
+  description "Generate a changelog based on the range of commits that triggered a build on CircleCI."
+
+  doLast {
+    exec {
+      def commitRange =  System.getenv("CIRCLE_COMPARE_URL").split("/").last()
+      if (!commitRange.contains("...")) commitRange += '...'
+      commandLine 'git', 'log', '--pretty=%s', "$commitRange"
+      standardOutput = new FileOutputStream('app/src/main/play/release-notes/en-GB/internal.txt')
+    }
   }
 }
 

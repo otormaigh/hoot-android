@@ -41,11 +41,14 @@ jobs:
           <<: *cache_key
 
       - run:
+          name: Generate changelog
+          command: ./gradlew generateChangelog
+      - run:
           name: Decrypt files
           command: bash enc/decrypt.sh
       - run:
-          name: Publish APK
-          command: ./gradlew publishReleaseBundle publishListing
+          name: Publish
+          command: ./gradlew publishRelease
       - run:
           name: Cleanup
           command: bash enc/encrypt.sh
