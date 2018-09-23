@@ -1,4 +1,0 @@
-update primary and accent colours
-update launcher icon to give it headphones
-add hoot.sketch file, update launcher icons
-add source code link to play store listing

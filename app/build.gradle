@@ -131,7 +131,10 @@ task generateChangelog {
   doLast {
     exec {
       def commitRange =  System.getenv("CIRCLE_COMPARE_URL").split("/").last()
-      if (!commitRange.contains("...")) commitRange += '...'
+      if (commitRange.isEmpty()) commitRange = System.getenv("CIRCLE_SHA1")
+      if (!commitRange.contains("...")) commitRange = "HEAD^..$commitRange"
+      println("COMMIT_RANGE -> $commitRange")
+
       commandLine 'git', 'log', '--pretty=%s', "$commitRange"
       standardOutput = new FileOutputStream('app/src/main/play/release-notes/en-GB/internal.txt')
     }
