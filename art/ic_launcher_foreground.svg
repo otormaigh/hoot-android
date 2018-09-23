@@ -5,10 +5,17 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="ic_launcher_foreground" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <circle id="Oval" stroke="#9B9B9B" stroke-width="16" fill-rule="nonzero" cx="256" cy="241" r="171"></circle>
-        <path d="M256,236 C256,191.81722 294.279654,156 341.5,156 C388.720346,156 427,191.81722 427,236 L427,412 L256,412 L256,236 Z" id="Combined-Shape-Copy" stroke="#9F9FA2" stroke-width="16" fill-rule="nonzero"></path>
-        <path d="M85,236 C85,191.81722 123.279654,156 170.5,156 C217.720346,156 256,191.81722 256,236 L256,412 L85,412 L85,236 Z" id="Combined-Shape" stroke="#9F9FA2" stroke-width="16" fill-rule="nonzero"></path>
-        <circle id="Oval-2" fill="#9F9FA2" fill-rule="nonzero" cx="171" cy="241" r="21"></circle>
-        <circle id="Oval-2-Copy" fill="#9F9FA2" fill-rule="nonzero" cx="342" cy="241" r="21"></circle>
+        <g id="Group" transform="translate(85.000000, 88.000000)" fill-rule="nonzero">
+            <ellipse id="Oval-6-Copy-3" fill="#FFA500" cx="23" cy="178" rx="15" ry="37"></ellipse>
+            <ellipse id="Oval-6-Copy-4" fill="#FFA500" cx="319" cy="178" rx="15" ry="37"></ellipse>
+            <rect id="Rectangle-2" fill="#9F9FA2" x="0" y="161" width="11" height="35"></rect>
+            <rect id="Rectangle-2-Copy" fill="#9F9FA2" x="331" y="161" width="11" height="35"></rect>
+            <path d="M5.04446321,162.999999 L5.04446343,163.000009 C5.01487499,161.760533 5,160.517559 5,159.271241 C5,71.3081636 79.0968739,0 170.5,0 C261.903126,0 336,71.3081636 336,159.271241 C336,160.517559 335.985125,161.760533 335.955537,163.000009" id="Combined-Shape" stroke="#9F9FA2" stroke-width="4"></path>
+        </g>
+        <ellipse id="Oval" stroke="#9B9B9B" stroke-width="16" fill-rule="nonzero" cx="256" cy="250.5" rx="134" ry="131.5"></ellipse>
+        <path d="M256.002168,247 C256.000724,246.83349 256,246.666823 256,246.5 C256,212.534488 285.996922,185 323,185 C360.003078,185 390,212.534488 390,246.5 C390,246.666823 389.999276,246.83349 389.997832,247 L390,382 L256,382 L256,247 Z" id="Combined-Shape-Copy" stroke="#9F9FA2" stroke-width="16" fill-rule="nonzero"></path>
+        <path d="M122.002168,247 C122.000724,246.83349 122,246.666823 122,246.5 C122,212.534488 151.996922,185 189,185 C226.003078,185 256,212.534488 256,246.5 C256,246.666823 255.999276,246.83349 255.997832,247 L256,382 L122,382 L122,247 Z" id="Combined-Shape" stroke="#9F9FA2" stroke-width="16" fill-rule="nonzero"></path>
+        <circle id="Oval-2" fill="#9F9FA2" fill-rule="nonzero" cx="189" cy="255" r="29"></circle>
+        <circle id="Oval-2-Copy" fill="#9F9FA2" fill-rule="nonzero" cx="323" cy="255" r="29"></circle>
     </g>
 </svg>
