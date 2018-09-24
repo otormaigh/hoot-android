@@ -4,12 +4,13 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import ie.pennylabs.hoot.data.room.HootDatabase
+import ie.pennylabs.hoot.data.room.MIGRATION_1_2
 import timber.log.Timber
 
 class HootApplication : Application() {
   val database by lazy {
     Room.databaseBuilder(applicationContext, HootDatabase::class.java, "hoot.db")
-      .fallbackToDestructiveMigration()
+      .addMigrations(MIGRATION_1_2)
       .build()
   }
 
