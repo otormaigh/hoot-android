@@ -41,9 +41,9 @@ class SongActivity : AppCompatActivity() {
 
   private fun playFromSearch(song: Song) {
     val intent = Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH)
-//    intent.putExtra(MediaStore.EXTRA_MEDIA_ARTIST, song.artist)
-//    intent.putExtra(MediaStore.EXTRA_MEDIA_TITLE, song.title)
-    intent.putExtra(SearchManager.QUERY, song.title.replace("by ", ""))
+    intent.putExtra(MediaStore.EXTRA_MEDIA_ARTIST, song.artist)
+    intent.putExtra(MediaStore.EXTRA_MEDIA_TITLE, song.title)
+    intent.putExtra(SearchManager.QUERY, song.sanitisedString)
     startActivity(intent)
   }
 }
