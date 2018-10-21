@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ie.pennylabs.hoot.R
 import ie.pennylabs.hoot.data.model.Song
 import ie.pennylabs.hoot.extension.copyToClipboard
-import ie.pennylabs.hoot.extension.toIso8601
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_song.*
 
@@ -29,8 +28,8 @@ class SongsAdapter(private val onSongSelected: OnSongSelected) : ListAdapter<Son
         true
       }
 
-      tvTitle.text = song.rawString
-      tvTimestamp.text = song.time.toIso8601()
+      tvTitle.text = song.title
+      tvArtist.text = song.artist
     }
   }
 }

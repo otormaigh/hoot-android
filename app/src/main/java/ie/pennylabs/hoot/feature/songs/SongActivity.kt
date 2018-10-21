@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.pennylabs.hoot.R
 import ie.pennylabs.hoot.app
@@ -35,7 +36,7 @@ class SongActivity : AppCompatActivity() {
 
     val adapter = SongsAdapter { playFromSearch(it) }
     rvSongs.adapter = adapter
-    rvSongs.layoutManager = LinearLayoutManager(this)
+    rvSongs.layoutManager = GridLayoutManager(this, 2)
 
     app.database.songDao().fetchAll().observe(this, Observer {
       if (it != null) adapter.submitList(it)
