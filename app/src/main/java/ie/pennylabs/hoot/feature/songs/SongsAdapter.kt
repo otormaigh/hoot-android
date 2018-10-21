@@ -30,7 +30,7 @@ class SongsAdapter(private val onSongSelected: OnSongSelected) : ListAdapter<Son
       }
 
       tvTitle.text = song.title
-      tvArtist.text = song.artist
+      tvArtist.text = song.artist.trimStart()
 
       Glide.with(containerView.context)
         .load(song.albumCover)
