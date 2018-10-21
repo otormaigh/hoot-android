@@ -12,6 +12,9 @@ if (file('../signing/play.json').exists()) {
     track = 'internal'
   }
 }
+if (file('../enc.gradle.properties').exists()) {
+  apply from: '../enc.gradle.properties'
+}
 
 android {
   compileSdkVersion 28
@@ -30,6 +33,9 @@ android {
         arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
       }
     }
+
+    buildConfigField "String", "IMGUR_URL", "\"https://api.imgur.com/3/\""
+    buildConfigField "String", "IMGUR_CLIENT_ID", project.properties["imgur_client_id"]
   }
 
   sourceSets {
@@ -92,21 +98,23 @@ dependencies {
 
   implementation 'com.jakewharton.timber:timber:4.7.1'
 
-  implementation 'com.google.firebase:firebase-analytics:16.0.3'
-  implementation 'com.google.firebase:firebase-core:16.0.3'
-  implementation 'com.google.firebase:firebase-perf:16.1.0'
+  implementation 'com.google.firebase:firebase-analytics:16.0.4'
+  implementation 'com.google.firebase:firebase-core:16.0.4'
+  implementation 'com.google.firebase:firebase-perf:16.1.2'
   implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
 
-  androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-  androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+  implementation "com.squareup.retrofit2:retrofit:$Deps.retrofit2"
+  implementation "com.squareup.retrofit2:converter-moshi:$Deps.retrofit2"
+  implementation "com.squareup.okhttp3:okhttp:$Deps.okhttp3"
+  implementation "com.squareup.okhttp3:logging-interceptor:$Deps.okhttp3"
+  implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:0.13.0-eap13'
+  implementation 'com.github.bumptech.glide:glide:4.8.0'
+  kapt 'com.github.bumptech.glide:compiler:4.8.0'
+
+  androidTestImplementation 'androidx.test:runner:1.1.0-beta02'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta02'
   androidTestImplementation "androidx.room:room-testing:$Deps.arch_room"
   androidTestImplementation 'com.squareup.assertj:assertj-android:1.2.0'
-}
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
 }
 
 androidExtensions {

@@ -51,10 +51,8 @@ class GdprBottomSheet(context: Context) : BottomSheetDialog(context) {
   }
 
   companion object {
-    fun show(context: Context) {
-      if (!context.prefs.hasAcceptedGdpr) {
-        GdprBottomSheet(context).show()
-      }
-    }
+    fun show(context: Context): GdprBottomSheet? =
+      if (!context.prefs.hasAcceptedGdpr) GdprBottomSheet(context).apply { show() }
+      else null
   }
 }
