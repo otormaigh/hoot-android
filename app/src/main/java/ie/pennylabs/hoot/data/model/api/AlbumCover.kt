@@ -31,6 +31,9 @@ interface AlbumCoverDao {
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   fun insert(data: List<AlbumCover>)
 
+  @Query("SELECT * FROM album_cover")
+  fun fetchAllSync(): List<AlbumCover>
+
   @Query("SELECT * FROM album_cover WHERE has_been_consumed = 0 LIMIT 1")
   fun fetchUnconsumed(): AlbumCover?
 
