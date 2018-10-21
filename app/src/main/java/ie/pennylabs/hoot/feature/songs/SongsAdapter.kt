@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ie.pennylabs.hoot.R
 import ie.pennylabs.hoot.data.model.Song
 import ie.pennylabs.hoot.extension.copyToClipboard
@@ -30,6 +31,10 @@ class SongsAdapter(private val onSongSelected: OnSongSelected) : ListAdapter<Son
 
       tvTitle.text = song.title
       tvArtist.text = song.artist
+
+      Glide.with(containerView.context)
+        .load(song.albumCover)
+        .into(ivAlbumCover)
     }
   }
 }

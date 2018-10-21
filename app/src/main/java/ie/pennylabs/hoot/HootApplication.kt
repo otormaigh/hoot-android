@@ -32,7 +32,7 @@ class HootApplication : Application() {
 
     if (BuildConfig.DEBUG) {
       GlobalScope.launch {
-        database.songDao().insert(Song(System.currentTimeMillis(), "Californication by R.H.C.P"))
+        database.songDao().insert(Song(System.currentTimeMillis(), "Californication by R.H.C.P", ""))
       }
     }
   }

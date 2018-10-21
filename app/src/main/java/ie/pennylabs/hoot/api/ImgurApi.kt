@@ -12,6 +12,6 @@ interface ImgurApi {
   fun getAlbumCovers(
     @Path("sort") sort: Sort = Sort.top,
     @Path("window") window: Window = Window.all,
-    @Path("page") page: Int = 1
+    @Path("page") page: Int
   ): Call<Gallery>
 }

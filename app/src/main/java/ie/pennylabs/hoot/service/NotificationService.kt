@@ -26,6 +26,13 @@ class NotificationService : NotificationListenerService(), CoroutineScope {
     val title = statusBarNotifications.notification.extras?.getString(Notification.EXTRA_TITLE)
       ?: "UNKNOWN"
 
-    launch { app.database.songDao().insertUnique(Song(time, title)) }
+    launch {
+      val albumCover = app.database.albumCoverDao().fetchUnconsumed()?.apply {
+        hasBeenConsumed = true
+        app.database.albumCoverDao().update(this)
+      }
+
+      app.database.songDao().insertUnique(Song(time, title, albumCover?.link ?: ""))
+    }
   }
 }
