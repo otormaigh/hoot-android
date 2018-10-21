@@ -15,4 +15,10 @@ object Deps {
 
   // androidx.room
   const val arch_room = "2.1.0-alpha01"
+
+  // com.squareup.okhttp3
+  const val okhttp3 = "3.11.0"
+
+  // com.squareup.retrofit2
+  const val retrofit2 = "2.4.0"
 }

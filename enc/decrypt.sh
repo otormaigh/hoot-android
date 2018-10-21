@@ -29,6 +29,7 @@ openssl aes-256-cbc -a -d -md sha256 -in enc/KeyStore.kt.aes -out buildSrc/src/m
 openssl aes-256-cbc -a -d -md sha256 -in enc/release.keystore.aes -out signing/release.keystore -k $HOOT_ENCRYPT_KEY
 openssl aes-256-cbc -a -d -md sha256 -in enc/play.json.aes -out signing/play.json -k $HOOT_ENCRYPT_KEY
 openssl aes-256-cbc -a -d -md sha256 -in enc/google-services.json.aes -out app/google-services.json -k $HOOT_ENCRYPT_KEY
+openssl aes-256-cbc -a -d -md sha256 -in enc/enc.gradle.properties.aes -out enc.gradle.properties -k $HOOT_ENCRYPT_KEY
 log "Files decrypted"
 
 echo "Finishing up"

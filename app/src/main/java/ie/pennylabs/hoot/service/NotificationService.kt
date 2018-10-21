@@ -5,9 +5,15 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import ie.pennylabs.hoot.app
 import ie.pennylabs.hoot.data.model.Song
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class NotificationService : NotificationListenerService() {
+class NotificationService : NotificationListenerService(), CoroutineScope {
+  override val coroutineContext: CoroutineContext
+    get() = Dispatchers.IO
+
   override fun onListenerConnected() = activeNotifications.forEach { insert(it) }
   override fun onNotificationPosted(statusBarNotification: StatusBarNotification?) = insert(statusBarNotification)
 
