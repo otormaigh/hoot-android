@@ -26,7 +26,6 @@ object ApiClient {
 
   private fun provideOkHttp(): OkHttpClient =
     OkHttpClient.Builder()
-      .protocols(listOf(Protocol.HTTP_1_1))
       .connectTimeout(API_TIMEOUT, TimeUnit.SECONDS)
       .readTimeout(API_TIMEOUT, TimeUnit.SECONDS)
       .writeTimeout(API_TIMEOUT, TimeUnit.SECONDS)
