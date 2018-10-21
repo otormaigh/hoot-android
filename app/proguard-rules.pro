@@ -1,3 +1,6 @@
+# local
+-keep class ie.pennylabs.hoot.** { *; }
+
 # https://github.com/square/moshi
 -dontwarn okio.**
 -dontwarn javax.annotation.**
