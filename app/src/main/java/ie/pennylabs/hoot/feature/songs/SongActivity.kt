@@ -14,16 +14,19 @@ import ie.pennylabs.hoot.app
 import ie.pennylabs.hoot.data.model.Song
 import ie.pennylabs.hoot.extension.hasNotificationAccess
 import ie.pennylabs.hoot.feature.gdpr.GdprBottomSheet
+import ie.pennylabs.hoot.service.AlbumCoverService
 import kotlinx.android.synthetic.main.activity_songs.*
 
 class SongActivity : AppCompatActivity() {
+  private var notificationAccessDialog: AlertDialog? = null
+  private var gdprBottomSheet: GdprBottomSheet? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_songs)
-    GdprBottomSheet.show(this)
 
     if (!hasNotificationAccess()) {
-      AlertDialog.Builder(this)
+      notificationAccessDialog = AlertDialog.Builder(this)
         .setTitle("Enable notification access")
         .setPositiveButton("Okay") { _, _ -> startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)) }
         .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
@@ -37,6 +40,19 @@ class SongActivity : AppCompatActivity() {
     app.database.songDao().fetchAll().observe(this, Observer {
       if (it != null) adapter.submitList(it)
     })
+
+    AlbumCoverService.fetch(this)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    gdprBottomSheet = GdprBottomSheet.show(this)
+  }
+
+  override fun onPause() {
+    super.onPause()
+    notificationAccessDialog?.dismiss()
+    gdprBottomSheet?.dismiss()
   }
 
   private fun playFromSearch(song: Song) {
