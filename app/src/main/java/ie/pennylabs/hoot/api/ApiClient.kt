@@ -2,44 +2,57 @@ package ie.pennylabs.hoot.api
 
 import com.squareup.moshi.Moshi
 import ie.pennylabs.hoot.BuildConfig
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiClient {
-  private var INSTANCE: ImgurApi? = null
+  private var IMGUR_INSTANCE: ImgurApi? = null
+  private var LAST_FM_INSTANCE: LastFmApi? = null
 
   private fun provideMoshi(): Moshi =
     Moshi.Builder()
       .build()
 
-  private fun provideRetrofit(moshi: Moshi = provideMoshi(), okHttpClient: OkHttpClient = provideOkHttp()): Retrofit =
+  private fun provideRetrofit(moshi: Moshi = provideMoshi(), okHttpClient: OkHttpClient, baseUrl: String): Retrofit =
     Retrofit.Builder()
-      .baseUrl(BuildConfig.IMGUR_URL)
+      .baseUrl(baseUrl)
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
 
-  private fun provideOkHttp(): OkHttpClient =
+  private fun provideOkHttp(authInterceptor: Interceptor): OkHttpClient =
     OkHttpClient.Builder()
       .connectTimeout(API_TIMEOUT, TimeUnit.SECONDS)
       .readTimeout(API_TIMEOUT, TimeUnit.SECONDS)
       .writeTimeout(API_TIMEOUT, TimeUnit.SECONDS)
-      .addInterceptor(ImgurAuthInterceptor())
+      .addInterceptor(authInterceptor)
       .addNetworkInterceptor(HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.NONE
         if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
-      }).build()
+      })
+      .build()
 
-  private fun provideImgurApi(retrofit: Retrofit = provideRetrofit()): ImgurApi = retrofit.create(ImgurApi::class.java)
+  private fun provideImgurApi(retrofit: Retrofit = provideRetrofit(
+    okHttpClient = provideOkHttp(ImgurAuthInterceptor()),
+    baseUrl = BuildConfig.IMGUR_URL)): ImgurApi = retrofit.create(ImgurApi::class.java)
 
-  fun instance(): ImgurApi {
-    if (INSTANCE == null) INSTANCE = provideImgurApi()
-    return INSTANCE!!
+  private fun provideLastFmApi(retrofit: Retrofit = provideRetrofit(
+    okHttpClient = provideOkHttp(LastFmAuthInterceptor()),
+    baseUrl = BuildConfig.LAST_FM_URL)): LastFmApi = retrofit.create(LastFmApi::class.java)
+
+  fun imgur(): ImgurApi {
+    if (IMGUR_INSTANCE == null) IMGUR_INSTANCE = provideImgurApi()
+    return IMGUR_INSTANCE!!
+  }
+
+  fun lastFm(): LastFmApi {
+    if (LAST_FM_INSTANCE == null) LAST_FM_INSTANCE = provideLastFmApi()
+    return LAST_FM_INSTANCE!!
   }
 }
 

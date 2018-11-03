@@ -7,6 +7,7 @@ import ie.pennylabs.hoot.data.model.Song
 import ie.pennylabs.hoot.data.room.HootDatabase
 import ie.pennylabs.hoot.data.room.MIGRATION_1_2
 import ie.pennylabs.hoot.data.room.MIGRATION_2_3
+import ie.pennylabs.hoot.data.room.MIGRATION_3_4
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -14,7 +15,7 @@ import timber.log.Timber
 class HootApplication : Application() {
   val database by lazy {
     Room.databaseBuilder(applicationContext, HootDatabase::class.java, "hoot.db")
-      .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+      .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
       .build()
   }
 
@@ -32,7 +33,7 @@ class HootApplication : Application() {
 
     if (BuildConfig.DEBUG) {
       GlobalScope.launch {
-        database.songDao().insert(Song(System.currentTimeMillis(), "Californication by R.H.C.P", ""))
+        database.songDao().insert(Song(System.currentTimeMillis(), "Californication by Red hot chilli peppers", "", ""))
       }
     }
   }

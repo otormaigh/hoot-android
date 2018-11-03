@@ -36,6 +36,8 @@ android {
 
     buildConfigField "String", "IMGUR_URL", "\"https://api.imgur.com/3/\""
     buildConfigField "String", "IMGUR_CLIENT_ID", project.properties["imgur_client_id"]
+    buildConfigField "String", "LAST_FM_URL", "\"https://ws.audioscrobbler.com/2.0/\""
+    buildConfigField "String", "LAST_FM_API_KEY", project.properties["last_fm_api_key"]
   }
 
   sourceSets {

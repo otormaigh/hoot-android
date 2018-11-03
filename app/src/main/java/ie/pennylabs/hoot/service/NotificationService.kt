@@ -32,7 +32,10 @@ class NotificationService : NotificationListenerService(), CoroutineScope {
         app.database.albumCoverDao().update(this)
       }
 
-      app.database.songDao().insertUnique(Song(time, title, albumCover?.link ?: ""))
+      val song = Song(time, title, albumCover?.link ?: "", "")
+      app.database.songDao().insertUnique(song)
+
+      AlbumCoverService.fetchRealAlbumCover(applicationContext, time)
     }
   }
 }
