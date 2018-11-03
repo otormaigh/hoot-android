@@ -113,6 +113,7 @@ dependencies {
   implementation "com.github.bumptech.glide:glide:$Deps.glide"
   kapt "com.github.bumptech.glide:compiler:$Deps.glide"
 
+  androidTestImplementation "androidx.test.ext:junit:1.0.0"
   androidTestImplementation 'androidx.test:runner:1.1.0'
   androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
   androidTestImplementation "androidx.room:room-testing:$Deps.arch_room"

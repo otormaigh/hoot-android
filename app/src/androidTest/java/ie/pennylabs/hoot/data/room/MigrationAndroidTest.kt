@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -59,18 +59,42 @@ class MigrationAndroidTest {
       .isEqualTo(123456789)
     assertThat(songs.first().rawString)
       .isEqualTo("This is a title")
-    assertThat(songs.first().albumCover)
-      .isEqualTo("")
+//    assertThat(songs.first().albumCover)
+//      .isEqualTo("")
 
     val albumCovers = getMigratedRoomDatabase().albumCoverDao().fetchAllSync()
     assertThat(albumCovers.size)
       .isEqualTo(0)
   }
 
+  @Test
+  fun testMigration3To4() {
+    testHelper.createDatabase(testDbName, 3).use {
+      it.insert("song", SQLiteDatabase.CONFLICT_REPLACE, ContentValues().apply {
+        put("time", 123456789)
+        put("raw_string", "This is a title")
+        put("album_cover", "https://albumcover.png")
+      })
+    }
+    testHelper.runMigrationsAndValidate(testDbName, 4, true, MIGRATION_3_4)
+
+    val songs = getMigratedRoomDatabase().songDao().fetchAllSync()
+    assertThat(songs.size)
+      .isEqualTo(1)
+    assertThat(songs.first().time)
+      .isEqualTo(123456789)
+    assertThat(songs.first().rawString)
+      .isEqualTo("This is a title")
+    assertThat(songs.first().fakeAlbumCover)
+      .isEqualTo("https://albumcover.png")
+    assertThat(songs.first().realAlbumCover)
+      .isEqualTo("")
+  }
+
   private fun getMigratedRoomDatabase(): HootDatabase {
     val database = Room.databaseBuilder(InstrumentationRegistry.getInstrumentation().targetContext,
       HootDatabase::class.java, testDbName)
-      .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+      .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
       .build()
     // close the database and release any stream resources when the test finishes
     testHelper.closeWhenFinished(database)

@@ -37,6 +37,9 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
 
 val MIGRATION_3_4 = object : Migration(3, 4) {
   override fun migrate(database: SupportSQLiteDatabase) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    database.execSQL("ALTER TABLE Song RENAME TO song_old")
+    database.execSQL("CREATE TABLE song (time INTEGER NOT NULL, raw_string TEXT NOT NULL, fake_album_cover TEXT NOT NULL DEFAULT '', real_album_cover TEXT NOT NULL DEFAULT '', PRIMARY KEY(time))")
+    database.execSQL("INSERT INTO song (time, raw_string, fake_album_cover) SELECT time, raw_string, album_cover FROM song_old")
+    database.execSQL("DROP TABLE song_old")
   }
 }
