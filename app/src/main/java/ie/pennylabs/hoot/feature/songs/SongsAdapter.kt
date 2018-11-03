@@ -13,7 +13,8 @@ import ie.pennylabs.hoot.extension.copyToClipboard
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_song.*
 
-class SongsAdapter(private val onSongSelected: OnSongSelected) : ListAdapter<Song, SongsAdapter.ViewHolder>(diffCallback) {
+class SongsAdapter(private val onSongSelected: OnSongSelected,
+                   private val onSongLongPressed: OnSongLongPressed) : ListAdapter<Song, SongsAdapter.ViewHolder>(diffCallback) {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
     ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_song, parent, false))
 
@@ -25,7 +26,8 @@ class SongsAdapter(private val onSongSelected: OnSongSelected) : ListAdapter<Son
     fun bind(song: Song) {
       containerView.setOnClickListener { onSongSelected.invoke(song) }
       containerView.setOnLongClickListener {
-        containerView.context.copyToClipboard(song.sanitisedString)
+//        containerView.context.copyToClipboard(song.sanitisedString)
+        onSongLongPressed(song)
         true
       }
 
@@ -33,7 +35,7 @@ class SongsAdapter(private val onSongSelected: OnSongSelected) : ListAdapter<Son
       tvArtist.text = song.artist.trimStart()
 
       Glide.with(containerView.context)
-        .load(song.albumCover)
+        .load(song.realAlbumCover.takeIf { it.isNotEmpty() } ?: song.fakeAlbumCover)
         .into(ivAlbumCover)
     }
   }
@@ -44,3 +46,4 @@ private val diffCallback = object : DiffUtil.ItemCallback<Song>() {
   override fun areContentsTheSame(oldItem: Song, newItem: Song) = oldItem === newItem
 }
 typealias OnSongSelected = (Song) -> Unit
+typealias OnSongLongPressed = (Song) -> Unit

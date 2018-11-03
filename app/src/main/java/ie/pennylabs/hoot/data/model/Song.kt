@@ -14,7 +14,8 @@ import androidx.room.Transaction
 data class Song(
   @PrimaryKey val time: Long,
   @ColumnInfo(name = "raw_string") val rawString: String,
-  @ColumnInfo(name = "album_cover") val albumCover: String) {
+  @ColumnInfo(name = "fake_album_cover") val fakeAlbumCover: String,
+  @ColumnInfo(name = "real_album_cover") val realAlbumCover: String) {
 
   val title: String
     get() = rawString.split("by").first()
@@ -37,8 +38,11 @@ interface SongDao {
     }
   }
 
-  @Query("UPDATE song SET album_cover = :albumCover WHERE time = :time")
-  fun updateAlbumCover(time: Long, albumCover: String)
+  @Query("UPDATE song SET fake_album_cover = :fakeAlbumCover WHERE time = :time")
+  fun updateAlbumCover(time: Long, fakeAlbumCover: String)
+
+  @Query("UPDATE song SET real_album_cover = :realAlbumCover WHERE time = :time")
+  fun updateRealAlbumCover(time: Long, realAlbumCover: String)
 
   @Query("SELECT * FROM song WHERE time > :since AND raw_string = :rawString")
   fun fetchByRawSince(rawString: String, since: Long): List<Song?>
@@ -49,6 +53,9 @@ interface SongDao {
   @Query("SELECT * FROM song ORDER BY time DESC")
   fun fetchAllSync(): List<Song>
 
-  @Query("SELECT * FROM song WHERE album_cover = ''")
+  @Query("SELECT * FROM song WHERE fake_album_cover = ''")
   fun fetchSongsWithoutAlbums(): List<Song>
+
+  @Query("SELECT * FROM song WHERE time = :id LIMIT 1")
+  fun fetchById(id: Long): Song?
 }

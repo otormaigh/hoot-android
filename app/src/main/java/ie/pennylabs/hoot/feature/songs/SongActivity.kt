@@ -33,7 +33,9 @@ class SongActivity : AppCompatActivity() {
         .show()
     }
 
-    val adapter = SongsAdapter { playFromSearch(it) }
+    val adapter = SongsAdapter(
+      { playFromSearch(it) },
+      { AlbumCoverService.fetchRealAlbumCover(this, it.time) })
     rvSongs.adapter = adapter
     rvSongs.layoutManager = GridLayoutManager(this, 2)
 
