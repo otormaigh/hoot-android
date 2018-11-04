@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <array name="settings_cover_art_entry">
-    <item>Fake Cover Art</item>
-    <item>Real Cover Art</item>
+    <item>/r/fakealbumcovers</item>
+    <item>LastFM</item>
   </array>
 
   <array name="settings_cover_art_value">
