@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ie.pennylabs.hoot.R
 import ie.pennylabs.hoot.data.model.Song
-import ie.pennylabs.hoot.extension.copyToClipboard
+import ie.pennylabs.hoot.toolbox.CoverArtSource
+import ie.pennylabs.hoot.toolbox.coverArtSource
+import ie.pennylabs.hoot.toolbox.settingsPrefs
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_song.*
 
@@ -26,7 +28,6 @@ class SongsAdapter(private val onSongSelected: OnSongSelected,
     fun bind(song: Song) {
       containerView.setOnClickListener { onSongSelected.invoke(song) }
       containerView.setOnLongClickListener {
-//        containerView.context.copyToClipboard(song.sanitisedString)
         onSongLongPressed(song)
         true
       }
@@ -34,8 +35,11 @@ class SongsAdapter(private val onSongSelected: OnSongSelected,
       tvTitle.text = song.title
       tvArtist.text = song.artist.trimStart()
 
+      val imageUrl = if (containerView.context.settingsPrefs.coverArtSource == CoverArtSource.Values.FAKE) song.fakeAlbumCover
+      else song.realAlbumCover
+
       Glide.with(containerView.context)
-        .load(song.realAlbumCover.takeIf { it.isNotEmpty() } ?: song.fakeAlbumCover)
+        .load(imageUrl)
         .into(ivAlbumCover)
     }
   }

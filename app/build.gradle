@@ -93,6 +93,7 @@ dependencies {
   implementation "androidx.appcompat:appcompat:$Deps.androidx"
   implementation "androidx.core:core-ktx:$Deps.androidx"
   implementation "androidx.recyclerview:recyclerview:$Deps.androidx"
+  implementation "androidx.preference:preference:$Deps.androidx"
   implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
   implementation "androidx.lifecycle:lifecycle-livedata:2.0.0"
   implementation "androidx.room:room-runtime:$Deps.arch_room"
