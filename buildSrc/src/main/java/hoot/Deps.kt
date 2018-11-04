@@ -16,6 +16,9 @@ object Deps {
   // androidx.room
   const val arch_room = "2.1.0-alpha02"
 
+  // androidx.lifecycle
+  const val lifecycle = "2.0.0"
+
   // com.squareup.okhttp3
   const val okhttp3 = "3.11.0"
 
