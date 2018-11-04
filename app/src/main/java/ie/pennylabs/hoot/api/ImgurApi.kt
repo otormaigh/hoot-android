@@ -10,7 +10,7 @@ import retrofit2.http.Path
 interface ImgurApi {
   @GET("gallery/r/fakealbumcovers/{sort}/{window}/{page}.json")
   fun getAlbumCovers(
-    @Path("sort") sort: Sort = Sort.top,
+    @Path("sort") sort: Sort = Sort.time,
     @Path("window") window: Window = Window.all,
     @Path("page") page: Int
   ): Call<Gallery>

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ie.pennylabs.hoot.R
 import ie.pennylabs.hoot.app
 import ie.pennylabs.hoot.data.model.Song
@@ -20,7 +21,7 @@ import ie.pennylabs.hoot.feature.settings.SettingsActivity
 import ie.pennylabs.hoot.service.AlbumCoverService
 import kotlinx.android.synthetic.main.activity_songs.*
 
-class SongActivity : AppCompatActivity() {
+class SongActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
   private var notificationAccessDialog: AlertDialog? = null
   private var gdprBottomSheet: GdprBottomSheet? = null
 
@@ -47,12 +48,14 @@ class SongActivity : AppCompatActivity() {
     })
 
     AlbumCoverService.fetch(this)
+
+    swipeRefresh.setOnRefreshListener(this)
   }
 
   override fun onResume() {
     super.onResume()
+    onRefresh()
     gdprBottomSheet = GdprBottomSheet.show(this)
-    rvSongs.adapter?.notifyDataSetChanged()
   }
 
   override fun onPause() {
@@ -71,6 +74,11 @@ class SongActivity : AppCompatActivity() {
       R.id.menuSettings -> startActivity(Intent(this, SettingsActivity::class.java))
     }
     return super.onOptionsItemSelected(item)
+  }
+
+  override fun onRefresh() {
+    swipeRefresh.isRefreshing = false
+    rvSongs.adapter?.notifyDataSetChanged()
   }
 
   private fun playFromSearch(song: Song) {

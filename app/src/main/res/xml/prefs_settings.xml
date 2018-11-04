@@ -5,5 +5,6 @@
     android:entryValues="@array/settings_cover_art_value"
     android:icon="@drawable/ic_library_music"
     android:key="cover_art_source"
+    android:defaultValue="fake"
     android:title="@string/cover_art_source" />
 </PreferenceScreen>

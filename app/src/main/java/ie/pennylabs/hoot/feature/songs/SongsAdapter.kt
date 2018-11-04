@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import ie.pennylabs.hoot.R
 import ie.pennylabs.hoot.data.model.Song
 import ie.pennylabs.hoot.toolbox.CoverArtSource
@@ -39,7 +40,9 @@ class SongsAdapter(private val onSongSelected: OnSongSelected,
       else song.realAlbumCover
 
       Glide.with(containerView.context)
-        .load(imageUrl)
+        .load(imageUrl.takeIf { it.isNotEmpty() } ?: song.fakeAlbumCover)
+        .apply(RequestOptions()
+          .error(R.drawable.ic_launcher_foreground))
         .into(ivAlbumCover)
     }
   }
