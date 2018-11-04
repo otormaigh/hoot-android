@@ -95,7 +95,9 @@ dependencies {
   implementation "androidx.recyclerview:recyclerview:$Deps.androidx"
   implementation "androidx.preference:preference:$Deps.androidx"
   implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
-  implementation "androidx.lifecycle:lifecycle-livedata:2.0.0"
+  implementation "androidx.lifecycle:lifecycle-livedata:$Deps.lifecycle"
+  implementation "androidx.lifecycle:lifecycle-viewmodel:$Deps.lifecycle"
+  implementation "androidx.lifecycle:lifecycle-extensions:$Deps.lifecycle"
   implementation "androidx.room:room-runtime:$Deps.arch_room"
   kapt "androidx.room:room-compiler:$Deps.arch_room"
 
@@ -149,7 +151,7 @@ task generateChangelog {
 
   doLast {
     exec {
-      def commitRange =  System.getenv("CIRCLE_COMPARE_URL").split("/").last()
+      def commitRange = System.getenv("CIRCLE_COMPARE_URL").split("/").last()
       if (commitRange.isEmpty()) commitRange = System.getenv("CIRCLE_SHA1")
       if (!commitRange.contains("...")) commitRange = "HEAD^..$commitRange"
       println("COMMIT_RANGE -> $commitRange")

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
   <ListPreference
+    android:defaultValue="fake"
     android:entries="@array/settings_cover_art_entry"
     android:entryValues="@array/settings_cover_art_value"
     android:icon="@drawable/ic_library_music"
     android:key="cover_art_source"
-    android:defaultValue="fake"
     android:title="@string/cover_art_source" />
+
+  <Preference
+    android:icon="@drawable/ic_refresh"
+    android:key="@string/btnRefreshCovers"
+    android:summary="Refresh missing cover art"
+    android:title="Refresh covers" />
 </PreferenceScreen>
