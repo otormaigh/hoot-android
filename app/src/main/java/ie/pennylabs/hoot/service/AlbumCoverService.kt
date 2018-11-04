@@ -66,8 +66,12 @@ class AlbumCoverService : IntentService("AlbumIntentService"), CoroutineScope {
     when (
       val result = ApiClient.lastFm().trackInfo(song.artist.trimStart(), song.title.trimEnd()).awaitResult()) {
       is ru.gildor.coroutines.retrofit.Result.Ok -> {
-        val url = result.value.track.album?.image?.firstOrNull { it.size == "extralarge" }?.text
-        if (url?.isNotEmpty() == true) app.database.songDao().updateRealAlbumCover(songId, url)
+        try {
+          val url = result.value.track.album?.image?.firstOrNull { it.size == "extralarge" }?.text
+          if (url?.isNotEmpty() == true) app.database.songDao().updateRealAlbumCover(songId, url)
+        } catch (e: Exception) {
+          Timber.e("$e")
+        }
       }
       is ru.gildor.coroutines.retrofit.Result.Error -> Timber.e("fetchRealAlbumCover : Error -> ${result.exception}")
       is ru.gildor.coroutines.retrofit.Result.Exception -> Timber.e("fetchRealAlbumCover : Exception -> ${result.exception}")

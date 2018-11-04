@@ -40,7 +40,7 @@ class SongsAdapter(private val onSongSelected: OnSongSelected,
       else song.realAlbumCover
 
       Glide.with(containerView.context)
-        .load(imageUrl.takeIf { it.isNotEmpty() } ?: song.fakeAlbumCover)
+        .load(imageUrl)
         .apply(RequestOptions()
           .error(R.drawable.ic_launcher_foreground))
         .into(ivAlbumCover)

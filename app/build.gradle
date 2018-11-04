@@ -96,6 +96,8 @@ dependencies {
   implementation "androidx.preference:preference:$Deps.androidx"
   implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
   implementation "androidx.lifecycle:lifecycle-livedata:2.0.0"
+  implementation "androidx.lifecycle:lifecycle-viewmodel:2.0.0"
+  implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
   implementation "androidx.room:room-runtime:$Deps.arch_room"
   kapt "androidx.room:room-compiler:$Deps.arch_room"
 
