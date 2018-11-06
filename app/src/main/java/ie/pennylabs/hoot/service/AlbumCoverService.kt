@@ -3,22 +3,29 @@ package ie.pennylabs.hoot.service
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import dagger.android.AndroidInjection
 import ie.pennylabs.hoot.api.ApiClient
-import ie.pennylabs.hoot.app
 import ie.pennylabs.hoot.data.model.api.AlbumCover
+import ie.pennylabs.hoot.data.room.HootDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.gildor.coroutines.retrofit.awaitResult
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class AlbumCoverService : IntentService("AlbumIntentService"), CoroutineScope {
+  @Inject
+  lateinit var database: HootDatabase
+
   override val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
 
   override fun onHandleIntent(intent: Intent?) {
+    AndroidInjection.inject(this)
+
     when (intent?.extras?.getString(REASON)) {
       FETCH -> fetchAlbumCovers(1)
       RE_FETCH -> fetchAlbumCovers((intent.extras?.getInt(LAST_PAGE) ?: 1) + 1)
@@ -27,7 +34,7 @@ class AlbumCoverService : IntentService("AlbumIntentService"), CoroutineScope {
   }
 
   private fun fetchAlbumCovers(page: Int) = launch {
-    if (app.database.albumCoverDao().unconsumedCount() < 25) {
+    if (database.albumCoverDao().unconsumedCount() < 25) {
       when (
         val result = ApiClient.imgur().getAlbumCovers(page = page).awaitResult()) {
         is ru.gildor.coroutines.retrofit.Result.Ok -> saveAlbumCovers(result.value.data, page)
@@ -38,7 +45,7 @@ class AlbumCoverService : IntentService("AlbumIntentService"), CoroutineScope {
   }
 
   private suspend fun saveAlbumCovers(data: List<AlbumCover>, page: Int) {
-    app.database.albumCoverDao()
+    database.albumCoverDao()
       .insert(data
         .asSequence()
         .filter { !it.isAd }
@@ -47,28 +54,28 @@ class AlbumCoverService : IntentService("AlbumIntentService"), CoroutineScope {
         .toList())
 
     delay(250)
-    val songsWithoutAlbums = app.database.songDao().fetchSongsWithoutAlbums()
-    val unconsumedAlbumCovers = app.database.albumCoverDao().fetchAllUnconsumed()
+    val songsWithoutAlbums = database.songDao().fetchSongsWithoutAlbums()
+    val unconsumedAlbumCovers = database.albumCoverDao().fetchAllUnconsumed()
 
     songsWithoutAlbums.forEachIndexed { index, song ->
       unconsumedAlbumCovers.getOrNull(index)?.let { albumCover ->
         albumCover.hasBeenConsumed = true
-        app.database.albumCoverDao().update(albumCover)
-        app.database.songDao().updateAlbumCover(song.time, albumCover.link)
+        database.albumCoverDao().update(albumCover)
+        database.songDao().updateAlbumCover(song.time, albumCover.link)
       } ?: return@forEachIndexed
     }
 
-    if (app.database.albumCoverDao().unconsumedCount() < 25) AlbumCoverService.refetch(this@AlbumCoverService, page)
+    if (database.albumCoverDao().unconsumedCount() < 25) AlbumCoverService.refetch(this@AlbumCoverService, page)
   }
 
   private fun fetchRealAlbumCover(songId: Long) = launch {
-    val song = app.database.songDao().fetchById(songId) ?: return@launch
+    val song = database.songDao().fetchById(songId) ?: return@launch
     when (
       val result = ApiClient.lastFm().trackInfo(song.artist.trimStart(), song.title.trimEnd()).awaitResult()) {
       is ru.gildor.coroutines.retrofit.Result.Ok -> {
         try {
           val url = result.value.track?.album?.image?.firstOrNull { it.size == "extralarge" }?.text
-          if (url?.isNotEmpty() == true) app.database.songDao().updateRealAlbumCover(songId, url)
+          if (url?.isNotEmpty() == true) database.songDao().updateRealAlbumCover(songId, url)
         } catch (e: Exception) {
           Timber.e("$e")
         }

@@ -3,19 +3,26 @@ package ie.pennylabs.hoot.service
 import android.app.Notification
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import dagger.android.AndroidInjection
 import ie.pennylabs.hoot.BuildConfig
-import ie.pennylabs.hoot.app
 import ie.pennylabs.hoot.data.model.Song
+import ie.pennylabs.hoot.data.room.HootDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class NotificationService : NotificationListenerService(), CoroutineScope {
+  @Inject
+  lateinit var database: HootDatabase
+
   override val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
 
-  init {
+  override fun onCreate() {
+    super.onCreate()
+
     if (BuildConfig.DEBUG) {
       saveSong(System.currentTimeMillis(), "Californication by Red hot chilli peppers")
     }
@@ -36,15 +43,19 @@ class NotificationService : NotificationListenerService(), CoroutineScope {
     saveSong(time, rawString)
   }
 
-  private fun saveSong(time: Long, rawString: String) = launch {
-    val albumCover = app.database.albumCoverDao().fetchUnconsumed()?.apply {
-      hasBeenConsumed = true
-      app.database.albumCoverDao().update(this)
+  private fun saveSong(time: Long, rawString: String) {
+    AndroidInjection.inject(this)
+
+    launch {
+      val albumCover = database.albumCoverDao().fetchUnconsumed()?.apply {
+        hasBeenConsumed = true
+        database.albumCoverDao().update(this)
+      }
+
+      val song = Song(time, rawString, albumCover?.link ?: "", "")
+      database.songDao().insertUnique(song)
+
+      AlbumCoverService.fetchRealAlbumCover(applicationContext, time)
     }
-
-    val song = Song(time, rawString, albumCover?.link ?: "", "")
-    app.database.songDao().insertUnique(song)
-
-    AlbumCoverService.fetchRealAlbumCover(applicationContext, time)
   }
 }

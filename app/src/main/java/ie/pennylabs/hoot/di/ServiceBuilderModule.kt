@@ -6,7 +6,7 @@ import ie.pennylabs.hoot.service.AlbumCoverService
 import ie.pennylabs.hoot.service.NotificationService
 
 @Module
-interface ServiceModule {
+interface ServiceBuilderModule {
   @ContributesAndroidInjector
   fun bindNotificationService(): NotificationService
 
