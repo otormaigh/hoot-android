@@ -89,11 +89,11 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$Deps.kotlin"
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$Deps.coroutines"
 
-  implementation "com.google.android.material:material:$Deps.androidx"
-  implementation "androidx.appcompat:appcompat:$Deps.androidx"
-  implementation "androidx.core:core-ktx:$Deps.androidx"
-  implementation "androidx.recyclerview:recyclerview:$Deps.androidx"
-  implementation "androidx.preference:preference:$Deps.androidx"
+  implementation 'com.google.android.material:material:1.0.0'
+  implementation 'androidx.appcompat:appcompat:1.0.1'
+  implementation 'androidx.core:core-ktx:1.0.1'
+  implementation 'androidx.recyclerview:recyclerview:1.0.0'
+  implementation 'androidx.preference:preference:1.0.0'
   implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
   implementation "androidx.lifecycle:lifecycle-livedata:$Deps.lifecycle"
   implementation "androidx.lifecycle:lifecycle-viewmodel:$Deps.lifecycle"
@@ -115,6 +115,12 @@ dependencies {
   implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:0.13.0-eap13'
   implementation "com.github.bumptech.glide:glide:$Deps.glide"
   kapt "com.github.bumptech.glide:compiler:$Deps.glide"
+
+  implementation "com.google.dagger:dagger:$Deps.dagger"
+  implementation "com.google.dagger:dagger-android:$Deps.dagger"
+  implementation "com.google.dagger:dagger-android-support:$Deps.dagger"
+  kapt "com.google.dagger:dagger-compiler:$Deps.dagger"
+  kapt "com.google.dagger:dagger-android-processor:$Deps.dagger"
 
   androidTestImplementation "androidx.test.ext:junit:1.0.0"
   androidTestImplementation 'androidx.test:runner:1.1.0'
