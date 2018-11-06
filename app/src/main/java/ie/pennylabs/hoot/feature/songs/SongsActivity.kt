@@ -12,20 +12,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import dagger.android.AndroidInjection
 import ie.pennylabs.hoot.R
-import ie.pennylabs.hoot.app
 import ie.pennylabs.hoot.data.model.Song
 import ie.pennylabs.hoot.extension.hasNotificationAccess
 import ie.pennylabs.hoot.feature.gdpr.GdprBottomSheet
 import ie.pennylabs.hoot.feature.settings.SettingsActivity
 import ie.pennylabs.hoot.service.AlbumCoverService
 import kotlinx.android.synthetic.main.activity_songs.*
+import javax.inject.Inject
 
-class SongActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class SongsActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+  @Inject
+  lateinit var viewModel: SongsViewModel
+
   private var notificationAccessDialog: AlertDialog? = null
   private var gdprBottomSheet: GdprBottomSheet? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    AndroidInjection.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_songs)
 
@@ -43,7 +48,7 @@ class SongActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     rvSongs.adapter = adapter
     rvSongs.layoutManager = GridLayoutManager(this, 2)
 
-    app.database.songDao().fetchAll().observe(this, Observer {
+    viewModel.fetchSongs().observe(this, Observer {
       if (it != null) adapter.submitList(it)
     })
 

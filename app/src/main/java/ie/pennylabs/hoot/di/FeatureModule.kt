@@ -5,9 +5,11 @@ import dagger.Module
 import dagger.Provides
 import ie.pennylabs.hoot.arch.ViewModelFactory
 import ie.pennylabs.hoot.di.feature.SettingsModule
+import ie.pennylabs.hoot.di.feature.SongsModule
 
 @Module(includes = [
-  SettingsModule::class
+  SettingsModule::class,
+  SongsModule::class
 ])
 object FeatureModule {
   @JvmStatic

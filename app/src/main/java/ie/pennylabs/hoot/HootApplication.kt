@@ -3,17 +3,11 @@ package ie.pennylabs.hoot
 import android.app.Activity
 import android.app.Application
 import android.app.Service
-import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.room.Room
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.HasServiceInjector
 import dagger.android.support.HasSupportFragmentInjector
-import ie.pennylabs.hoot.data.room.HootDatabase
-import ie.pennylabs.hoot.data.room.MIGRATION_1_2
-import ie.pennylabs.hoot.data.room.MIGRATION_2_3
-import ie.pennylabs.hoot.data.room.MIGRATION_3_4
 import ie.pennylabs.hoot.di.DaggerAppComponent
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,12 +19,6 @@ class HootApplication : Application(), HasActivityInjector, HasSupportFragmentIn
   lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
   @Inject
   lateinit var serviceInjector: DispatchingAndroidInjector<Service>
-
-  val database by lazy {
-    Room.databaseBuilder(applicationContext, HootDatabase::class.java, "hoot.db")
-      .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
-      .build()
-  }
 
   override fun onCreate() {
     super.onCreate()
@@ -53,6 +41,3 @@ class HootApplication : Application(), HasActivityInjector, HasSupportFragmentIn
   override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment> = supportFragmentInjector
   override fun serviceInjector(): DispatchingAndroidInjector<Service> = serviceInjector
 }
-
-val Context.app: HootApplication
-  get() = applicationContext as HootApplication
