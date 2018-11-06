@@ -4,7 +4,8 @@ import android.app.IntentService
 import android.content.Context
 import android.content.Intent
 import dagger.android.AndroidInjection
-import ie.pennylabs.hoot.api.ApiClient
+import ie.pennylabs.hoot.api.ImgurApi
+import ie.pennylabs.hoot.api.LastFmApi
 import ie.pennylabs.hoot.data.model.api.AlbumCover
 import ie.pennylabs.hoot.data.room.HootDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +20,10 @@ import kotlin.coroutines.CoroutineContext
 class AlbumCoverService : IntentService("AlbumIntentService"), CoroutineScope {
   @Inject
   lateinit var database: HootDatabase
+  @Inject
+  lateinit var imgurApi: ImgurApi
+  @Inject
+  lateinit var lastFm: LastFmApi
 
   override val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
@@ -36,7 +41,7 @@ class AlbumCoverService : IntentService("AlbumIntentService"), CoroutineScope {
   private fun fetchAlbumCovers(page: Int) = launch {
     if (database.albumCoverDao().unconsumedCount() < 25) {
       when (
-        val result = ApiClient.imgur().getAlbumCovers(page = page).awaitResult()) {
+        val result = imgurApi.getAlbumCovers(page = page).awaitResult()) {
         is ru.gildor.coroutines.retrofit.Result.Ok -> saveAlbumCovers(result.value.data, page)
         is ru.gildor.coroutines.retrofit.Result.Error -> Timber.e("fetchAlbumCovers : Error -> ${result.exception}")
         is ru.gildor.coroutines.retrofit.Result.Exception -> Timber.e("fetchAlbumCovers : Exception -> ${result.exception}")
@@ -71,7 +76,7 @@ class AlbumCoverService : IntentService("AlbumIntentService"), CoroutineScope {
   private fun fetchRealAlbumCover(songId: Long) = launch {
     val song = database.songDao().fetchById(songId) ?: return@launch
     when (
-      val result = ApiClient.lastFm().trackInfo(song.artist.trimStart(), song.title.trimEnd()).awaitResult()) {
+      val result = lastFm.trackInfo(song.artist.trimStart(), song.title.trimEnd()).awaitResult()) {
       is ru.gildor.coroutines.retrofit.Result.Ok -> {
         try {
           val url = result.value.track?.album?.image?.firstOrNull { it.size == "extralarge" }?.text

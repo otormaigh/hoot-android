@@ -1,6 +1,7 @@
 package ie.pennylabs.hoot.di
 
 import androidx.room.Room
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import ie.pennylabs.hoot.HootApplication
@@ -13,6 +14,12 @@ import javax.inject.Singleton
 
 @Module
 object DataModule {
+  @Provides
+  @Singleton
+  @JvmStatic
+  fun provideMoshi(): Moshi =
+    Moshi.Builder().build()
+
   @Provides
   @Singleton
   @JvmStatic
