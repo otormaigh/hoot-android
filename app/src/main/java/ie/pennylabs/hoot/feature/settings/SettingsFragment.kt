@@ -16,7 +16,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
   override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
     addPreferencesFromResource(R.xml.prefs_settings)
 
-    findPreference(getString(R.string.btnRefreshCovers)).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+    findPreference<Preference>(getString(R.string.btnRefreshCovers))?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
       viewModel.refreshMissingCovers(requireContext()).observe(this, Observer { showProgress ->
         if (showProgress != null) activity?.findViewById<View>(R.id.progress)?.isVisible = showProgress
       })

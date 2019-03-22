@@ -50,7 +50,7 @@ class SongsAdapter(private val onSongSelected: OnSongSelected,
 
 private val diffCallback = object : DiffUtil.ItemCallback<Song>() {
   override fun areItemsTheSame(oldItem: Song, newItem: Song) = oldItem.time == newItem.time
-  override fun areContentsTheSame(oldItem: Song, newItem: Song) = oldItem === newItem
+  override fun areContentsTheSame(oldItem: Song, newItem: Song) = oldItem == newItem
 }
 typealias OnSongSelected = (Song) -> Unit
 typealias OnSongLongPressed = (Song) -> Unit

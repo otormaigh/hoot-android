@@ -17,11 +17,12 @@ if (file('../enc.gradle.properties').exists()) {
 }
 
 android {
-  compileSdkVersion 28
+  compileSdkVersion 'android-Q'
+  buildToolsVersion '28.0.3'
   defaultConfig {
     applicationId "ie.pennylabs.hoot"
     minSdkVersion 27
-    targetSdkVersion 28
+    targetSdkVersion 'Q'
     versionCode BuildConst.Version.code
     versionName BuildConst.Version.name
     archivesBaseName = "hoot-$versionName"
@@ -38,6 +39,11 @@ android {
     buildConfigField "String", "IMGUR_CLIENT_ID", project.properties["imgur_client_id"]
     buildConfigField "String", "LAST_FM_URL", "\"https://ws.audioscrobbler.com/2.0/\""
     buildConfigField "String", "LAST_FM_API_KEY", project.properties["last_fm_api_key"]
+  }
+
+  compileOptions {
+    sourceCompatibility 1.8
+    targetCompatibility 1.8
   }
 
   sourceSets {
@@ -86,40 +92,40 @@ android {
 }
 
 dependencies {
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$Deps.kotlin"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$Deps.kotlin"
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$Deps.coroutines"
 
-  implementation "com.google.android.material:material:$Deps.androidx"
-  implementation "androidx.appcompat:appcompat:$Deps.androidx"
-  implementation "androidx.core:core-ktx:$Deps.androidx"
-  implementation "androidx.recyclerview:recyclerview:$Deps.androidx"
-  implementation "androidx.preference:preference:$Deps.androidx"
-  implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+  implementation 'com.google.android.material:material:1.1.0-alpha04'
+  implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+  implementation 'androidx.core:core-ktx:1.1.0-alpha05'
+  implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha03'
+  implementation 'androidx.preference:preference:1.1.0-alpha04'
+  implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
   implementation "androidx.lifecycle:lifecycle-livedata:$Deps.lifecycle"
   implementation "androidx.lifecycle:lifecycle-viewmodel:$Deps.lifecycle"
   implementation "androidx.lifecycle:lifecycle-extensions:$Deps.lifecycle"
-  implementation "androidx.room:room-runtime:$Deps.arch_room"
-  kapt "androidx.room:room-compiler:$Deps.arch_room"
+  implementation "androidx.room:room-runtime:$Deps.room"
+  kapt "androidx.room:room-compiler:$Deps.room"
 
   implementation 'com.jakewharton.timber:timber:4.7.1'
 
-  implementation 'com.google.firebase:firebase-analytics:16.0.5'
-  implementation 'com.google.firebase:firebase-core:16.0.5'
-  implementation 'com.google.firebase:firebase-perf:16.2.0'
-  implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
+  implementation 'com.google.firebase:firebase-analytics:16.4.0'
+  implementation 'com.google.firebase:firebase-core:16.0.8'
+  implementation 'com.google.firebase:firebase-perf:16.2.4'
+  implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
   implementation "com.squareup.retrofit2:retrofit:$Deps.retrofit2"
   implementation "com.squareup.retrofit2:converter-moshi:$Deps.retrofit2"
   implementation "com.squareup.okhttp3:okhttp:$Deps.okhttp3"
   implementation "com.squareup.okhttp3:logging-interceptor:$Deps.okhttp3"
-  implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:0.13.0-eap13'
+  implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:1.1.0'
   implementation "com.github.bumptech.glide:glide:$Deps.glide"
   kapt "com.github.bumptech.glide:compiler:$Deps.glide"
 
-  androidTestImplementation "androidx.test.ext:junit:1.0.0"
-  androidTestImplementation 'androidx.test:runner:1.1.0'
-  androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-  androidTestImplementation "androidx.room:room-testing:$Deps.arch_room"
+  androidTestImplementation "androidx.test.ext:junit:1.1.1-alpha02"
+  androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+  androidTestImplementation "androidx.room:room-testing:$Deps.room"
   androidTestImplementation 'com.squareup.assertj:assertj-android:1.2.0'
 }
 
