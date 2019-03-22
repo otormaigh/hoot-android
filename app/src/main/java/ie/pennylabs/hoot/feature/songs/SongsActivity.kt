@@ -8,24 +8,22 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import dagger.android.AndroidInjection
 import ie.pennylabs.hoot.R
+import ie.pennylabs.hoot.arch.HootActivity
 import ie.pennylabs.hoot.data.model.Song
 import ie.pennylabs.hoot.extension.hasNotificationAccess
 import ie.pennylabs.hoot.feature.gdpr.GdprBottomSheet
 import ie.pennylabs.hoot.feature.settings.SettingsActivity
 import ie.pennylabs.hoot.service.AlbumCoverService
+import ie.pennylabs.hoot.toolbox.extensions.viewModelProvider
 import kotlinx.android.synthetic.main.activity_songs.*
-import javax.inject.Inject
 
-class SongsActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
-  @Inject
-  lateinit var viewModel: SongsViewModel
-
+class SongsActivity : HootActivity(), SwipeRefreshLayout.OnRefreshListener {
+  private val viewModel by viewModelProvider { SongsViewModel::class.java }
   private var notificationAccessDialog: AlertDialog? = null
   private var gdprBottomSheet: GdprBottomSheet? = null
 
